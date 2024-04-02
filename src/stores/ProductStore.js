@@ -13,6 +13,4 @@ export const useProductStore = defineStore("ProductStore", {
         }
     }
 
-    // gettersΩ
-
 })

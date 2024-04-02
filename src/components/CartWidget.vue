@@ -27,14 +27,14 @@ const cartStore = useCartStore();
               :product="items[0]"
               :count="cartStore.groupedCount(name)"
               @updateCount=""
-              @clear=""
+              @clear="cartStore.clearItem(name)"
           />
         </ul>
         <div class="flex justify-end text-2xl mb-5">
-          Total: <strong>$40</strong>
+          Total: <strong>{{ cartStore.total }}</strong>
         </div>
         <div class="flex justify-end">
-          <AppButton class="secondary mr-2">Clear Cart</AppButton>
+          <AppButton class="secondary mr-2" @click="cartStore.$reset()">Clear Cart</AppButton>
           <AppButton class="primary">Checkout</AppButton>
         </div>
       </div>
