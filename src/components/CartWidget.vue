@@ -26,8 +26,9 @@ const cartStore = useCartStore();
               :key="name"
               :product="items[0]"
               :count="cartStore.groupedCount(name)"
-              @updateCount=""
-              @clear="cartStore.clearItem(name)"
+              @updateCount="cartStore.setItemCount(items[0],$event)"
+              @clear=" cartStore.clearItem(name)
+          "
           />
         </ul>
         <div class="flex justify-end text-2xl mb-5">
