@@ -12,5 +12,4 @@ export const useProductStore = defineStore("ProductStore", {
             this.products = (await import("../data/products")).default
         }
     }
-
 })

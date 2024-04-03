@@ -1,11 +1,13 @@
-import { defineStore } from "pinia"
+import { acceptHMRUpdate, defineStore } from "pinia"
 import { groupBy } from "lodash"
 import { useAuthUserStore } from "@/stores/AuthUserStore"
+import { useLocalStorage } from "@vueuse/core"
 
 export const useCartStore = defineStore("CartStore", {
+    historyEnabled: true,
     state: () => {
         return {
-            items: []
+            items: useLocalStorage("CartStore", [])
         }
     },
     getters: {
@@ -18,7 +20,6 @@ export const useCartStore = defineStore("CartStore", {
             sorted.forEach((key) => {
                 inOrder[key] = grouped[key]
             })
-            console.log(inOrder)
             return inOrder
         },
         groupedCount: (state) => (name) => state.grouped[name].length,
@@ -29,7 +30,7 @@ export const useCartStore = defineStore("CartStore", {
             const authUserStore = useAuthUserStore()
             alert(`Checkout for ${authUserStore.username} for $${this.total}`)
         },
-        addToCart(count, item) {
+        addItems(count, item) {
             count = parseInt(count)
             for (let i = 0; i < count; i++) {
                 this.items.push({ ...item })
@@ -40,7 +41,11 @@ export const useCartStore = defineStore("CartStore", {
         },
         setItemCount(item, count) {
             this.clearItem(item.name)
-            this.addToCart(count, item)
+            this.addItems(count, item)
         }
     }
 })
+
+if (import.meta.hot) {
+    import.meta.hot.accept(acceptHMRUpdate(useCartStore, import.meta.hot))
+}
